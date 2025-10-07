@@ -1,0 +1,16 @@
+{
+  "instructionFiles": [
+    ".github/copilot-instructions.md"
+  ],
+  "preferredLanguage": "javascript",
+  "context": {
+    "projectType": "2d-topdown-game",
+    "frontend": "html5-canvas",
+    "backend": "node-express"
+  },
+  "behaviors": {
+    "commentPreference": "explain-when-complex",
+    "codeStyle": "clean-readable",
+    "importStyle": "esm"
+  }
+}
