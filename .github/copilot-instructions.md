@@ -13,7 +13,7 @@ Structure code with ES Modules (import/export) syntax.
 
 Organize the client into modular subsystems: rendering, input, networking, entities, and UI.
 
-Use low-poly assets and keep materials optimized (e.g., PBR materials with simple shaders or baked lighting).
+Use low-poly assets and keep materials optimized (simple shaders or baked lighting).
 
 Store all 3D assets (GLB, textures, audio) under /client/assets/.
 
@@ -21,13 +21,9 @@ Use requestAnimationFrame for the main game loop.
 
 Include player movement, camera control, and world scene management.
 
-Prefer clean, readable, and well-commented code explaining core 3D math (e.g., rotation, vector movement, camera follow).
+Use Babylon’s Scene Graph effectively for players, world, lighting, and animations.
 
-Use Babylon’s Scene Graph effectively for player entities, world, lighting, and animations.
-
-Always name variables clearly (e.g., playerMesh, cameraTarget, socketConnection).
-
-Handle real-time updates from the server through Socket.IO events (e.g., playerJoined, stateUpdate, playerLeft).
+Handle real-time updates from the server via Socket.IO (playerJoined, stateUpdate, playerLeft).
 
 Example Rendering Responsibilities
 System	Description
@@ -40,86 +36,80 @@ ui/hud.js	Renders in-game UI such as chat, inventory, and status bars
 
 Use Node.js + Express + Socket.IO.
 
-Store server code in /server/.
+Store all server code in /server/.
 
-Express should serve the static /client folder and handle the WebSocket upgrade.
+Express should serve static client files and handle WebSocket upgrades.
 
-Maintain an in-memory player registry (Map or object) containing IDs, names, positions, and rotation.
+Maintain an in-memory player registry storing IDs, names, positions, and rotation.
 
 The server should:
 
-Assign unique IDs to players.
+Assign unique player IDs.
 
-Broadcast player join/leave events.
+Broadcast join/leave events.
 
-Sync position updates via Socket.IO (updatePosition, stateUpdate).
+Sync positions and state updates through Socket.IO.
 
-Optionally handle persistence (DB integration later).
+Use async/await, modularize logic into controllers/ and utils/.
 
-Use async/await and modularize logic into controllers/ and utils/.
+Target a 20Hz tick rate (~50ms updates).
 
-Tick rate for server updates: ~20Hz (50ms interval).
-
-All network messages should be lightweight JSON objects.
+Use concise JSON for all network messages.
 
 Example Socket.IO Event Design
 Event	Direction	Description
 welcome	server → client	Sends initial world state and player ID
-playerJoined	server → all	Notifies all players of a new player
-updatePosition	client → server	Sends player position and rotation
-stateUpdate	server → all	Periodic broadcast of all player states
-playerLeft	server → all	Informs players when someone disconnects
-chat	both	Simple text-based chat system
+playerJoined	server → all	Notifies players of a new player
+updatePosition	client → server	Sends player position/rotation
+stateUpdate	server → all	Broadcasts all player states
+playerLeft	server → all	Player disconnect notice
+chat	both	Basic in-game chat system
 🧩 Code Style & Quality
 
 Follow Prettier style: 2-space indentation, semicolons, single quotes.
 
-Avoid overly long functions (>50 lines).
+Avoid long functions (>50 lines).
 
-Use clear, descriptive naming for meshes, materials, and systems.
+Use descriptive variable names for meshes, cameras, and materials.
 
-Include inline comments for vector math, interpolation, and physics updates.
+Include comments for 3D math (vectors, quaternions, rotations).
 
-Use constants (e.g., const MOVE_SPEED = 4;) instead of magic numbers.
+Replace “magic numbers” with constants (e.g. const MOVE_SPEED = 4;).
 
-Favor readability and modularity over micro-optimization.
+Prioritize clarity and modularity over micro-optimization.
 
-📁 Project Structure (for Copilot)
-
-This is a 3D RPG project built with Babylon.js and Socket.IO.
-Copilot should assume this layout and generate new files or code accordingly.
-
+📁 Project Structure
 client/
 ├── index.html
 ├── main.js
 │
 ├── core/
-│   ├── scene.js          # Engine setup (Babylon.js scene, camera, lighting)
-│   ├── renderer.js       # Rendering loop, frame management
+│   ├── scene.js          # Babylon engine, camera, lights
+│   ├── renderer.js       # Game loop and render cycle
 │   ├── world.js          # Loads terrain, environment, skybox
 │
 ├── entities/
-│   ├── player.js         # Local and remote player logic
-│   ├── npc.js            # NPC definitions and behavior
+│   ├── player.js         # Player logic (local/remote)
+│   ├── npc.js            # NPCs, pathfinding
 │
 ├── input/
 │   ├── controls.js       # Keyboard/mouse/gamepad input
 │
 ├── network/
-│   ├── socket.js         # Socket.IO client setup and event handling
+│   ├── socket.js         # Socket.IO client setup & events
 │
 ├── ui/
-│   ├── hud.js            # Health, inventory, chat, menus
+│   ├── hud.js            # UI overlay, chat, inventory
 │
 ├── assets/               # Models, textures, sounds
-└── utils/                # Math helpers, interpolation, collision utils
+└── utils/                # Math helpers, interpolation, collision
 
 server/
-├── index.js              # Express + Socket.IO app entry
-├── controllers/          # Game logic (movement, combat, world state)
-├── routes/               # Optional REST routes (save/load)
-├── utils/                # Helper functions, constants
-└── config.js             # Server config (tick rate, ports, limits)
+├── index.js              # Express + Socket.IO entry
+├── controllers/          # Game logic (movement, world sync)
+├── routes/               # Optional REST API (save/load)
+├── utils/                # Helpers and constants
+└── config.js             # Server configuration (ports, tick rate)
 
 .github/
 └── copilot-instructions.md
@@ -127,53 +117,99 @@ server/
 Folder Rules for Copilot
 
 Never mix responsibilities:
-
 Rendering in core/, logic in entities/, networking in network/, UI in ui/.
 
-Always use ES Modules in the client (import/export).
+Always use ES Modules on the client.
 
-Use CommonJS or ES Modules on the server depending on project setup.
+Keep filenames lowercase and descriptive.
 
-Keep filenames lowercase and use clear descriptive names.
+When generating new systems:
 
-When generating new systems, Copilot should decide placement based on purpose:
-
-3D camera code → core/scene.js
+3D camera → core/scene.js
 
 Movement interpolation → utils/interpolation.js
 
-Socket.IO event handling → network/socket.js
+Socket.IO handling → network/socket.js
 
-Chat UI → ui/chat.js
+Chat → ui/chat.js
 
-🎨 Style & Design Guidelines
+🎨 Visual Style
 
-Keep visual style low-poly and readable.
+Low-poly world aesthetic.
 
-Use PBR materials sparingly; prefer unlit or flat shading.
+Flat or simple PBR materials.
 
-Maintain consistent world scale (1 unit = 1 meter).
+1 Babylon.js unit = 1 meter.
 
-Include ambient lighting and dynamic shadows where appropriate.
+Basic ambient light + directional sunlight.
 
-Use Babylon.js AssetContainer or SceneLoader for 3D assets.
+Shadows optional for performance.
+
+Use SceneLoader or AssetContainer for assets.
 
 🧠 Learning Mode (Minimal Change Policy)
 
-This project emphasizes gradual learning and understanding.
+This project emphasizes gradual learning and clear progression.
 
 When Copilot suggests code:
 
-Prefer incremental edits over full rewrites.
+Prefer small edits, not total rewrites.
 
-Preserve the current architecture unless instructed to refactor.
+Maintain architecture unless explicitly changing it.
 
-Add concise, explanatory comments like
-// Added camera follow logic or // Sync remote player positions.
+Always include short, helpful comments like:
+// added remote player sync or // smoothed camera motion.
 
-Avoid unnecessary abstractions or third-party dependencies.
+Avoid abstractions or extra libraries.
 
-Keep all improvements small, focused, and educational.
+Focus on educational clarity and step-by-step evolution.
 
 Goal:
-Empower the developer to learn how a real multiplayer 3D RPG works, not just generate the final product.
+Help the developer understand each part of building a 3D multiplayer RPG.
+
+💬 Copilot Prompt Examples
+
+Here are examples of ideal prompts to use in Copilot Chat or inline completions.
+They teach Copilot what kinds of help to give for this project.
+
+🧩 Game Systems
+
+“Create a Babylon.js scene.js that sets up a camera, light, and ground.”
+
+“Generate player.js to spawn a low-poly mesh and handle WASD movement.”
+
+“Add camera follow logic that orbits around the player.”
+
+“Implement socket.io events to broadcast player positions between clients.”
+
+“Write interpolation code for smoothing remote player movement.”
+
+“Generate a chat.js UI that connects to the socket and displays messages.”
+
+“Add a world.js loader that imports a GLB file for the map.”
+
+“Create a basic NPC.js that walks randomly and syncs with server state.”
+
+🧠 Networking
+
+“Implement a Socket.IO server that tracks player positions and broadcasts updates every 50ms.”
+
+“Show how to handle player disconnects cleanly on the server.”
+
+“Add a ‘welcome’ event that sends initial world data to a new client.”
+
+🎨 UI & Assets
+
+“Add an HTML overlay for health and inventory using Babylon GUI.”
+
+“Create a chat HUD that displays player messages over time.”
+
+“Show how to load a GLB model and attach it to the player entity.”
+
+🔍 Debugging / Learning
+
+“Explain how to use Babylon.js Vector3 for player movement direction.”
+
+“Help me understand how to interpolate remote player positions smoothly.”
+
+“Show how to integrate socket.io client in Babylon’s game loop.”
