@@ -1,16 +1,5 @@
-# Javascript RPG game
+3D RPG Starter
 
-Minimal 2D top-down RPG demo built with HTML5 Canvas and Node/Express for static serving.
+Client: Babylon.js, HTML5
 
-How to run locally:
-
-```powershell
-npm install
-npm start
-# then open http://localhost:3000 in your browser
-```
-
-Development notes:
-- Client files live in `client/`
-- Server is `server/server.js`
-- Player code in `client/player.js`
+Server: Node.js, Express, Socket.io

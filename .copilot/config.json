@@ -4,9 +4,10 @@
   ],
   "preferredLanguage": "javascript",
   "context": {
-    "projectType": "2d-topdown-game",
-    "frontend": "html5-canvas",
-    "backend": "node-express"
+    "projectType": "3D MMO Game",
+    "frontend": "html5-canvas, babylon.js",
+    "backend": "node-express, socket.io",
+    "database": "mongodb"
   },
   "behaviors": {
     "commentPreference": "explain-when-complex",

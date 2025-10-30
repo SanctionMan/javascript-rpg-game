@@ -1,39 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Javascript RPG Game</title>
-		<link rel="stylesheet" href="index.css" />
-	</head>
-	<body>
-		<div id="app">
-			<nav id="top-nav">
-				<div class="brand">RPG</div>
-				<div class="links">
-					<a href="#">Play</a>
-					<a href="#">Inventory</a>
-					<a href="#">Settings</a>
-				</div>
-			</nav>
-
-			<aside id="left-panel">
-				<!-- Left panel reserved for map/controls/menus -->
-				<h3>Menu</h3>
-				<ul>
-					<li>Quests</li>
-					<li>Characters</li>
-					<li>Log</li>
-				</ul>
-			</aside>
-
-			<main id="main">
-				<div id="game-container">
-					<canvas id="game-canvas" width="800" height="600" tabindex="0"></canvas>
-				</div>
-			</main>
-		</div>
-
-		<script type="module" src="./main.js"></script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>3D RPG Starter</title>
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; }
+      canvas { width: 100%; height: 100%; display: block; }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas"></canvas>
+    <script type="module" src="/main.js"></script>
+  </body>
 </html>
